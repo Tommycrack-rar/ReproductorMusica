@@ -1,6 +1,6 @@
 /**
  * @file MainFrame.cpp
- * @author JOHAN MUÑOZ (johmunozma@unal.edu.co) and Tomas Suarez()
+ * JOHAN MUÑOZ (johmunozma@unal.edu.co) and TOMAS SUAREZ()
  * @brief Clase principal que representa la ventana del reproductor de música
  * @version 0.1
  * @date 2025-10-20
