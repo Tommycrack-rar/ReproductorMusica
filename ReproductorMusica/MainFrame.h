@@ -1,3 +1,13 @@
+/**
+ * @file MainFrame.h
+ * @author 
+ * @brief Clase principal que representa la ventana del reproductor de música
+ * @version 0.1
+ * @date 2025-10-20
+ * 
+ * @copyright Copyright (c) 2025
+ * 
+ */
 #pragma once
 #define _CRT_SECURE_NO_WARNINGS
 #include<iostream>
@@ -10,14 +20,21 @@ using namespace std;
 
 
 //Declaracion de la clase MainFrame que hereda de wxFrame
-
+/**
+ * @brief Clase principal que representa la ventana del reproductor de música
+ * 
+ * Hereda de wxFrame y gestiona la interfaz gráfica y funcionalidad del reproductor
+ */
 class MainFrame : public wxFrame {
 public:
+	/**
+     * @brief Constructor de MainFrame
+     * @param title Título de la ventana
+     */	
 	MainFrame(const wxString& title);
 private:
 
-	/*Definicion de variables de audio*/
-
+	
 	bool f;
 	sf::Music sfSong;
 	sf::Time time;
@@ -26,7 +43,7 @@ private:
 	float currentTime;
 
 	//Declararacion de cola, pila y arreglo para la playlist
-
+	
 	bool c;
 	queue<string> playlistQueue;
 	stack<string> historyStack;
@@ -67,19 +84,61 @@ private:
 	int barProgress;
 	int volumeVal;
 
-	/*Definicion de controladores de eventos para los controladores definidos*/
-
+	//Estos son los controladores de los eventos
+	
+	
+    /**
+     * @brief Maneja el evento del botón de playlist
+     * @param evt Evento de comando
+     */
 	void OnPlaylistButton(wxCommandEvent& evt);
+	
+	/**
+     * @brief Maneja el evento del botón de historial
+     * @param evt Evento de comando
+     */
 	void OnHistoryButton(wxCommandEvent& evt);
+	
+	/**
+     * @brief Maneja el evento del botón de Pausa
+     * @param evt Evento de comando
+     */
 	void OnPausingButton(wxCommandEvent& evt); 
+	
+	/**
+     * @brief Maneja el evento del botón de Previo
+     * @param evt Evento de comando
+     */
 	void OnPreviousButton(wxCommandEvent& evt);
+
+	/**
+     * @brief Maneja el evento del botón de next
+     * @param evt Evento de comando
+     */
 	void OnNextButton(wxCommandEvent& evt);
 
+	/**
+     * @brief Maneja el evento del cambio en la barra de volumen
+     * @param evt Evento de comando
+     */
 	void OnChangedVolBar(wxCommandEvent& evt);
+	
+	/**
+     * @brief Maneja el evento del cambio en la barra del progreso
+     * @param evt Evento de comando
+     */
 	void OnChangedProgBar(wxCommandEvent& evt);
 
+	/**
+     * @brief Maneja el evento al clickear en una cancion
+     * @param evt Evento de comando
+     */
 	void OnClickedSongs(wxCommandEvent& evt);
 
+	/**
+     * @brief Maneja el evento del temporizador y actualiza en la UI
+     * @param evt Evento de temporizador
+     */
 	void OnTimer(wxTimerEvent& evt);
 	
 };
