@@ -1,6 +1,6 @@
 /**
  * @file App.cpp
- * @author your name (you@domain.com)
+  * @author JOHAN MUÑOZ (johmunozma@unal.edu.co) and TOMAS SUAREZ()
  * @brief Implementación de la clase App - Punto de entrada de la aplicación
  * @version 0.1
  * @date 2025-10-20
