@@ -1,3 +1,13 @@
+/**
+ * @file MainFrame.h
+ * @author JOHAN MUÑOZ (johmunozma@unal.edu.co) and Tomas Suarez()
+ * @brief Clase principal que representa la ventana del reproductor de música
+ * @version 0.1
+ * @date 2025-10-20
+ * 
+ * @copyright Copyright (c) 2025
+ * 
+ */
 #define _CRT_SECURE_NO_WARNINGS
 #include "MainFrame.h"
 #include<iostream>
@@ -9,7 +19,17 @@ using namespace std;
 namespace fs = std::filesystem;
 
 //Definicion de la clase MainFrame
-
+/**
+ * @brief Constructor de la clase MainFrame
+ * 
+ * Inicializa la ventana principal del reproductor con todos sus componentes:
+ * - Carga la lista de canciones desde el directorio
+ * - Configura la interfaz gráfica
+ * - Establece los bindings de eventos
+ * - Inicializa las variables de control
+ * 
+ * @param title Título de la ventana
+ */
 MainFrame::MainFrame(const wxString& title)
 	: wxFrame(nullptr, wxID_ANY, title, wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX)) {
 
@@ -94,7 +114,13 @@ MainFrame::MainFrame(const wxString& title)
 }
 
 //Definicion del controlador de eventos para el boton de playlist
-
+/**
+ * @brief Maneja el evento del botón de playlist
+ * 
+ * Muestra la lista de playlist y oculta el historial cuando se presiona el botón
+ * 
+ * @param evt Evento de comando del botón
+ */
 void MainFrame::OnPlaylistButton(wxCommandEvent& evt) {
 	if (p) {
 		playlist->Show(true);
@@ -104,7 +130,13 @@ void MainFrame::OnPlaylistButton(wxCommandEvent& evt) {
 }
 
 //Definicion del controlador de eventos para el boton de historial
-
+/**
+ * @brief Maneja el evento del botón de historial
+ * 
+ * Muestra el historial de reproducción y oculta la playlist cuando se presiona el botón
+ * 
+ * @param evt Evento de comando del botón
+ */
 void MainFrame::OnHistoryButton(wxCommandEvent& evt) {
 	if (!p) {
 		playlist->Show(false);
@@ -114,7 +146,14 @@ void MainFrame::OnHistoryButton(wxCommandEvent& evt) {
 }
 
 //Definicion del controlador de eventos para el boton de pausa/reproduccion
-
+/**
+ * @brief Maneja el evento del botón de play/pausa
+ * 
+ * Alterna entre reproducir y pausar la canción actual.
+ * Actualiza el icono del botón y controla el temporizador.
+ * 
+ * @param evt Evento de comando del botón
+ */
 void MainFrame::OnPausingButton(wxCommandEvent& evt) {
 	if (f) {
 		wxLogStatus("Playing");
@@ -134,7 +173,14 @@ void MainFrame::OnPausingButton(wxCommandEvent& evt) {
 }
 
 //Definicion del controlador de eventos para el boton de retroceso
-
+/**
+ * @brief Maneja el evento del botón de canción anterior
+ * 
+ * Si la canción está en los primeros 2 segundos, reproduce la canción anterior del historial.
+ * Si no, reinicia la canción actual.
+ * 
+ * @param evt Evento de comando del botón
+ */
 void MainFrame::OnPreviousButton(wxCommandEvent& evt) {
 	if (currentTime <= 2) {
 		playlistQueue.front() = historyStack.top();
@@ -168,7 +214,14 @@ void MainFrame::OnPreviousButton(wxCommandEvent& evt) {
 }
 
 //Definicion del controlador de eventos para el boton de siguiente
-
+/**
+ * @brief Maneja el evento del botón de canción siguiente
+ * 
+ * Avanza a la siguiente canción en la playlist, moviendo la actual al historial.
+ * Actualiza la interfaz y reproduce la nueva canción.
+ * 
+ * @param evt Evento de comando del botón
+ */
 void MainFrame::OnNextButton(wxCommandEvent& evt) {
 	if (playlistQueue.size() > 1) {
 		
@@ -203,21 +256,42 @@ void MainFrame::OnNextButton(wxCommandEvent& evt) {
 }
 
 //Definicion del controlador de eventos para el slider de volumen
-
+/**
+ * @brief Maneja el cambio en el slider de volumen
+ * 
+ * Actualiza el volumen de reproducción según el valor del slider
+ * 
+ * @param evt Evento del slider
+ */
 void MainFrame::OnChangedVolBar(wxCommandEvent& evt) {
 	volumeVal = volume->GetValue();
 	sfSong.setVolume(volumeVal);
 }
 
 //Definicion del controlador de eventos para la barra de reproduccion
-
+/**
+ * @brief Maneja el cambio en la barra de progreso
+ * 
+ * Actualiza la posición de reproducción de la canción según la barra de progreso
+ * 
+ * @param evt Evento del slider
+ */
 void MainFrame::OnChangedProgBar(wxCommandEvent& evt) {
 	barProgress = progressBar->GetValue();
 	sfSong.setPlayingOffset(sf::seconds(barProgress));
 }
 
 //Definicion del controlador de eventos para el temporizador
-
+/**
+ * @brief Maneja el evento del temporizador
+ * 
+ * Actualiza periódicamente:
+ * - La barra de progreso
+ * - El texto del tiempo transcurrido
+ * - Controla el avance automático a la siguiente canción
+ * 
+ * @param evt Evento del temporizador
+ */
 void MainFrame::OnTimer(wxTimerEvent& evt) {
 	wxLogStatus("Playing...");
 	currentTime = sfSong.getPlayingOffset().asSeconds();
@@ -268,6 +342,13 @@ void MainFrame::OnTimer(wxTimerEvent& evt) {
 
 
 //Definicion del controlador de eventos para la seleccion de canciones para iniciar la playlist
+/**
+ * @brief Maneja la selección de canciones en la lista
+ * 
+ * Añade la canción seleccionada a la playlist y reproduce si es la primera selección.
+ * 
+ * @param evt Evento de selección de lista
+ */
 void MainFrame::OnClickedSongs(wxCommandEvent& evt) { 
 	wxLogStatus("Selected");
 	
