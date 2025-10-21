@@ -1,6 +1,6 @@
 /**
  * @file MainFrame.cpp
- * JOHAN MUÑOZ (johmunozma@unal.edu.co) and TOMAS SUAREZ()
+ * JOHAN MUÑOZ (johmunozma@unal.edu.co) and TOMAS SUAREZ(tsuarezl@unal.edu.co)
  * @brief Clase principal que representa la ventana del reproductor de música
  * @version 0.1
  * @date 2025-10-20
@@ -41,7 +41,7 @@ MainFrame::MainFrame(const wxString& title)
 
 	//
 
-	std::string path_string = "resources/songs";
+	std::string path_string = "ruta/deseada";
 
 	try {
 		for (const auto& entry : fs::directory_iterator(path_string)) {
@@ -64,8 +64,8 @@ MainFrame::MainFrame(const wxString& title)
 
 	repertory = new wxListBox(panel, wxID_ANY, wxPoint(20, 50), wxSize(530, 360), searcherArray);//Canciones a elegir en forma de ListBox
 	playlist = new wxListBox(panel, wxID_ANY, wxPoint(580, 50), wxSize(300, 360));
-	history = new wxListBox(panel, wxID_ANY, wxPoint(580, 50), wxSize(300, 360));
-	history->Show(false);
+	record = new wxListBox(panel, wxID_ANY, wxPoint(580, 50), wxSize(300, 360));
+	record->Show(false);
 
 	c = true;
 	p = false;
@@ -78,7 +78,7 @@ MainFrame::MainFrame(const wxString& title)
 	//Definiion de los botones de historial y fila de reproduccion
 
 	playlistButton = new wxButton(panel, wxID_ANY, "Playlist", wxPoint(580, 25), wxSize(130, 25));
-	historyButton = new wxButton(panel, wxID_ANY, "Historial", wxPoint(750, 25), wxSize(130, 25));
+	recordButton = new wxButton(panel, wxID_ANY, "Historial", wxPoint(750, 25), wxSize(130, 25));
 
 	/*Definicion de los botones de control de reproduccion
 	  Cambio de color de sus fondos*/
@@ -100,7 +100,7 @@ MainFrame::MainFrame(const wxString& title)
 	prev->Bind(wxEVT_BUTTON, &MainFrame::OnPreviousButton, this);
 	next->Bind(wxEVT_BUTTON, &MainFrame::OnNextButton, this);
 	playlistButton->Bind(wxEVT_BUTTON, &MainFrame::OnPlaylistButton, this);
-	historyButton->Bind(wxEVT_BUTTON, &MainFrame::OnHistoryButton, this);
+	recordButton->Bind(wxEVT_BUTTON, &MainFrame::OnRecordButton, this);
 
 	volume->Bind(wxEVT_SLIDER, &MainFrame::OnChangedVolBar, this);
 	progressBar->Bind(wxEVT_SLIDER, &MainFrame::OnChangedProgBar, this);
@@ -124,7 +124,7 @@ MainFrame::MainFrame(const wxString& title)
 void MainFrame::OnPlaylistButton(wxCommandEvent& evt) {
 	if (p) {
 		playlist->Show(true);
-		history->Show(false);
+		record->Show(false);
 		p = !p;
 	};
 }
@@ -137,10 +137,10 @@ void MainFrame::OnPlaylistButton(wxCommandEvent& evt) {
  * 
  * @param evt Evento de comando del botón
  */
-void MainFrame::OnHistoryButton(wxCommandEvent& evt) {
+void MainFrame::OnRecordButton(wxCommandEvent& evt) {
 	if (!p) {
 		playlist->Show(false);
-		history->Show(true);
+		record->Show(true);
 		p = !p;
 	};
 }
@@ -183,8 +183,8 @@ void MainFrame::OnPausingButton(wxCommandEvent& evt) {
  */
 void MainFrame::OnPreviousButton(wxCommandEvent& evt) {
 	if (currentTime <= 2) {
-		playlistQueue.front() = historyStack.top();
-		historyStack.pop();
+		playlistQueue.front() = recordStack.top();
+		recordStack.pop();
 
 		sfSong.openFromFile("resources/songs/" + playlistQueue.front() + ".wav");
 		songText->SetLabel(playlistQueue.front());
@@ -225,14 +225,10 @@ void MainFrame::OnPreviousButton(wxCommandEvent& evt) {
 void MainFrame::OnNextButton(wxCommandEvent& evt) {
 	if (playlistQueue.size() > 1) {
 		
-		historyStack.push(playlistQueue.front());
-		history->Insert(wxString(playlistQueue.front()), 0);
-		history->Refresh();
-		history->Update();
-
-		if (history->GetCount() > 23) {
-			history->Delete(history->GetCount() - 1);
-		};
+		recordStack.push(playlistQueue.front());
+		record->Insert(wxString(playlistQueue.front()), 0);
+		record->Refresh();
+		record->Update();
 
 		playlistQueue.pop();
 		playlist->Delete(0);
@@ -300,10 +296,10 @@ void MainFrame::OnTimer(wxTimerEvent& evt) {
 	songProgress->SetLabel(wxString::Format("%d:%02d", songMinutes, static_cast<int>(currentTime) % 60));
 
 	if (currentTime >= songSeconds) {
-		historyStack.push(playlistQueue.front());
-		history->Insert(wxString(playlistQueue.front()), 0);
-		history->Refresh();
-		history->Update();
+		recordStack.push(playlistQueue.front());
+		record->Insert(wxString(playlistQueue.front()), 0);
+		record->Refresh();
+		record->Update();
 		if (!playlistQueue.empty()) {
 			if (playlistQueue.size() > 1) {
 
@@ -333,9 +329,6 @@ void MainFrame::OnTimer(wxTimerEvent& evt) {
 				barProgress = 0;
 				f = true;
 			};
-		};
-		if (history->GetCount() > 23){
-			history->Delete(history->GetCount() - 1);
 		};
 	};
 }

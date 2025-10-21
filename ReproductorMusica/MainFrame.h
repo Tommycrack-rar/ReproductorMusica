@@ -1,6 +1,6 @@
 /**
  * @file MainFrame.h
- * JOHAN MUÑOZ (johmunozma@unal.edu.co) and TOMAS SUAREZ()
+ * JOHAN MUÑOZ (johmunozma@unal.edu.co) and TOMAS SUAREZ(tsuarezl@unal.edu.co)
  * @brief Clase principal que representa la ventana del reproductor de música
  * @version 0.1
  * @date 2025-10-20
@@ -46,9 +46,8 @@ private:
 	
 	bool c;
 	queue<string> playlistQueue;
-	stack<string> historyStack;
+	stack<string> recordStack;
 	vector<string> searcherArray;
-	vector<string> temporal;
 	string currentSong;
 
 	//Definicion del temporizador para actualizar la barra de progreso
@@ -60,7 +59,7 @@ private:
 	Sliders de volumen y barra de reproduccion*/
 
 	bool p;
-	wxButton* historyButton;
+	wxButton* recordButton;
 	wxButton* playlistButton;
 
 	wxBitmapButton* play;
@@ -72,7 +71,7 @@ private:
 
 	wxListBox* repertory;
 	wxListBox* playlist;
-	wxListBox* history;
+	wxListBox* record;
 
 	wxStaticText* songText;
 	wxStaticText* songProgress;
@@ -87,24 +86,24 @@ private:
 	//Estos son los controladores de los eventos
 	
 	
-    /**
-     * @brief Maneja el evento del botón de playlist
-     * @param evt Evento de comando
-     */
+	/**
+	 * @brief Maneja el evento del botón de playlist
+	 * @param evt Evento de comando
+	 */
 	void OnPlaylistButton(wxCommandEvent& evt);
-	
+
 	/**
-     * @brief Maneja el evento del botón de historial
-     * @param evt Evento de comando
-     */
-	void OnHistoryButton(wxCommandEvent& evt);
-	
+	 * @brief Maneja el evento del botón de historial
+	 * @param evt Evento de comando
+	 */
+	void OnRecordButton(wxCommandEvent& evt);
+
 	/**
-     * @brief Maneja el evento del botón de Pausa
-     * @param evt Evento de comando
-     */
-	void OnPausingButton(wxCommandEvent& evt); 
-	
+	 * @brief Maneja el evento del botón de Pausa
+	 * @param evt Evento de comando
+	 */
+	void OnPausingButton(wxCommandEvent& evt);
+
 	/**
      * @brief Maneja el evento del botón de Previo
      * @param evt Evento de comando

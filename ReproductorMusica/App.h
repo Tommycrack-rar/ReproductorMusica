@@ -1,12 +1,9 @@
 /**
  * @file App.h
- * @author JOHAN MUÑOZ (johmunozma@unal.edu.co) and TOMAS SUAREZ()
+ * @author JOHAN MUÑOZ (johmunozma@unal.edu.co) and TOMAS SUAREZ(tsuarezl@unal.edu.co)
  * @brief Clase principal de la aplicación wxWidgets - Punto de entrada del reproductor de música
  * @version 0.1
  * @date 2025-10-20
- * 
- * @copyright Copyright (c) 2025
- * 
  */
 #pragma once
 #define _CRT_SECURE_NO_WARNINGS
