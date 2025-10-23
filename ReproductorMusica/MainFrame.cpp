@@ -41,7 +41,7 @@ MainFrame::MainFrame(const wxString& title)
 
 	//
 
-	std::string path_string = "ruta/deseada";
+	std::string path_string = "resources/songs";
 
 	try {
 		for (const auto& entry : fs::directory_iterator(path_string)) {
@@ -183,6 +183,7 @@ void MainFrame::OnPausingButton(wxCommandEvent& evt) {
  */
 void MainFrame::OnPreviousButton(wxCommandEvent& evt) {
 	if (currentTime <= 2) {
+		wxLogStatus("Previous Song");
 		playlistQueue.front() = recordStack.top();
 		recordStack.pop();
 
@@ -197,15 +198,20 @@ void MainFrame::OnPreviousButton(wxCommandEvent& evt) {
 		progressBar->SetValue(0);
 		barProgress = 0;
 
+		playlist->Insert(wxString(playlistQueue.front()), 0);
+
 		sfSong.stop();
 		sfSong.play();
+		timer->Start(250);
+		f = false;
 	}
 	else {
 		wxLogStatus("Rewinded");
 		play->SetBitmap(wxBitmap("resources/play.png", wxBITMAP_TYPE_PNG));
-		sfSong.pause();
 		timer->Stop();
+		sfSong.stop();
 		progressBar->SetValue(0);
+		currentTime = 0;
 		barProgress = 0;
 		songProgress->SetLabel("0:00");
 		f = true;
